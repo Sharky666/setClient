@@ -1,0 +1,10 @@
+<h3>Welcome {{clientName}}</h3>
+<h2>{{lobbyId}}</h2>
+<!--if client is the owner display the available gamemodes in a div list and the client can choose a gamemode by pressing one-->
+<ng-container *ngIf="isClientOwner">
+    <div *ngFor="let gameMode of (validGameModes | async)?.result">
+        <h3 (click)="setChosenGameMode(gameMode)">{{gameMode}}</h3>
+    </div>
+</ng-container>
+
+<h2>{{lobbyGameMode}}</h2>
