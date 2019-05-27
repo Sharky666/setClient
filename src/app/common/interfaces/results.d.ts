@@ -17,10 +17,15 @@ export interface LobbyJoinResults {
 }
 
 export interface LobbyStatusResults {
-    result: {
+     result: {
         status: string,
         gameMode: string
     },
+    error: string
+}
+
+export interface LobbyClientsResults {
+    result: Array<string>
     error: string
 }
 
@@ -34,3 +39,7 @@ export interface LobbyPutGameModeResults {
     error: string
 }
 
+export interface LobbyStatusResultsResult {
+    status: string,
+    gameMode: string
+}

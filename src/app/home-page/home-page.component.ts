@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { LobbyService } from '../lobby/lobby.service';
 import { ClientService } from '../client.service';
+import { VirtualTimeScheduler } from 'rxjs';
 
 @Component({
   selector: 'app-home-page',
@@ -10,6 +11,7 @@ import { ClientService } from '../client.service';
 })
 export class HomePageComponent implements OnInit {
   clientName: string = '';
+  lobbyId: string = '';
 
   constructor(
     private router: Router,
@@ -44,6 +46,24 @@ export class HomePageComponent implements OnInit {
               }
             })
       };
+    });
+  }
+  onJoinClick() {
+    this.lobbyService.joinLobby(this.lobbyId, this.clientName)
+    .subscribe(data => {
+      if (!data.error) {
+        const results = data.result;
+        this.clientService.setToken(results.clientToken);
+        this.clientService.setLobbyId(this.lobbyId.toUpperCase());
+        this.clientService.setName(this.clientName);
+        this.clientService.setOwner(results.isOwner);
+        this.router.navigate(['lobby', this.clientService.getLobbyId()]);
+      }
+      // error with joining
+      else {
+        // TODO: print the error to the screen using an error element
+        console.log(data.error);
+      }
     });
   }
 }

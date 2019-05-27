@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Results, LobbyCreationResults, LobbyStatusResults, LobbyJoinResults, LobbyValidGameModesResults, LobbyPutGameModeResults } from '../common/interfaces/results';
+import { Results, LobbyCreationResults, LobbyStatusResults, LobbyJoinResults, LobbyValidGameModesResults, LobbyPutGameModeResults, LobbyClientsResults } from '../common/interfaces/results';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -38,6 +38,15 @@ export class LobbyService {
 
   public getLobbyStatus(lobbyKey: string, token: string) {
     return this.http.get<LobbyStatusResults>(`${this.address}/lobby/status`, {
+      headers: {
+        'lobbykey': lobbyKey,
+        'token': token
+      }
+    });
+  };
+
+  public getLobbyClients(lobbyKey: string, token: string) {
+    return this.http.get<LobbyClientsResults>(`${this.address}/lobby/clients`, {
       headers: {
         'lobbykey': lobbyKey,
         'token': token
