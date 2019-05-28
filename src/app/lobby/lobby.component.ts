@@ -4,7 +4,7 @@ import { LobbyService } from './lobby.service';
 import { ClientService } from '../client.service';
 import { LobbyStatusResultsResult } from '../common/interfaces/results';
 import { Subject, timer } from 'rxjs';
-import { debounce } from 'rxjs/operators';
+import { debounce, distinctUntilChanged } from 'rxjs/operators';
 
 @Component({
   selector: 'app-lobby',
@@ -35,7 +35,7 @@ export class LobbyComponent implements OnInit {
     this.update();
     setInterval(this.update, 1000);
     this.clientGameModeSelect$
-      .pipe(debounce(() => timer(500))).subscribe((gameMode) => this.setGameMode(gameMode));
+      .pipe(debounce(() => timer(500))).pipe(distinctUntilChanged()).subscribe((gameMode) => this.setGameMode(gameMode));
   }
 
   private update() {
