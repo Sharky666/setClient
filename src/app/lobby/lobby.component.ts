@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { LobbyService } from './lobby.service';
 import { ClientService } from '../client.service';
@@ -24,7 +24,8 @@ export class LobbyComponent implements OnInit {
   lobbyClients: Array<string> = [''];
 
   lobbyStatus: LobbyStatusResultsResult;
-  lobbyGameMode: string;
+  lobbyGameMode: string = 'bitch';
+  interval;
 
   constructor(
     private router: Router,
@@ -32,20 +33,20 @@ export class LobbyComponent implements OnInit {
     private clientService: ClientService) {}
 
   ngOnInit() {
+    if (!this.clientToken) return;
     this.update();
-    setInterval(this.update, 1000);
+    this.interval = setInterval(this.update.bind(this), 1000);
     this.clientGameModeSelect$
       .pipe(debounce(() => timer(500))).pipe(distinctUntilChanged()).subscribe((gameMode) => this.setGameMode(gameMode));
   }
 
-  private update() {
-      if (!this.clientToken) return;
-      this.updateLobbyStatus();
-      this.updateLobbyClients();
+  ngOnDestroy() {
+    clearInterval(this.interval);
   }
 
   private updateLobbyClients() {
-    this.lobbyService.getLobbyClients(this.lobbyId, this.clientToken).subscribe(data => {
+    this.lobbyService.getLobbyClients(this.lobbyId, this.clientToken)
+    .subscribe(data => {
       const newLobbyClients = data.result;
       // if there's a change in the lobbyClients
       if (this.lobbyClients !== newLobbyClients) {
@@ -56,7 +57,7 @@ export class LobbyComponent implements OnInit {
 
   private updateLobbyStatus() {
     this.lobbyService.getLobbyStatus(this.lobbyId, this.clientToken)
-      .subscribe(data => {
+    .subscribe(data => {
         if (!data.error) {
           this.lobbyStatus = data.result;
           this.lobbyGameMode = this.lobbyStatus.gameMode;
@@ -66,6 +67,11 @@ export class LobbyComponent implements OnInit {
           // TOOD: print the error to the screen~
         }
       });
+  }
+
+  private update() {
+    this.updateLobbyStatus();
+    this.updateLobbyClients();
   }
 
   private setGameMode(gameMode) {
