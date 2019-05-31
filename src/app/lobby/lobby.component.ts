@@ -24,7 +24,7 @@ export class LobbyComponent implements OnInit {
   lobbyClients: Array<string> = [''];
 
   lobbyStatus: LobbyStatusResultsResult;
-  lobbyGameMode: string = 'bitch';
+  lobbyGameMode: string = '';
   interval;
 
   constructor(
@@ -42,17 +42,12 @@ export class LobbyComponent implements OnInit {
 
   ngOnDestroy() {
     clearInterval(this.interval);
+    this.clientGameModeSelect$.unsubscribe();
   }
 
-  private updateLobbyClients() {
-    this.lobbyService.getLobbyClients(this.lobbyId, this.clientToken)
-    .subscribe(data => {
-      const newLobbyClients = data.result;
-      // if there's a change in the lobbyClients
-      if (this.lobbyClients !== newLobbyClients) {
-        this.lobbyClients = newLobbyClients;
-      }
-    });
+  private update() {
+    this.updateLobbyStatus();
+    this.updateLobbyClients();
   }
 
   private updateLobbyStatus() {
@@ -69,9 +64,15 @@ export class LobbyComponent implements OnInit {
       });
   }
 
-  private update() {
-    this.updateLobbyStatus();
-    this.updateLobbyClients();
+  private updateLobbyClients() {
+    this.lobbyService.getLobbyClients(this.lobbyId, this.clientToken)
+    .subscribe(data => {
+      const newLobbyClients = data.result;
+      // if there's a change in the lobbyClients
+      if (this.lobbyClients !== newLobbyClients) {
+        this.lobbyClients = newLobbyClients;
+      }
+    });
   }
 
   private setGameMode(gameMode) {
