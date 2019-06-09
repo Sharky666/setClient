@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { HomePageComponent } from './home-page/home-page.component';
 import { LobbyComponent } from './lobby/lobby.component';
+import { RandomNumberComponent } from './games/random-number/random-number.component';
 
 const routes: Routes = [
   {
@@ -10,11 +11,11 @@ const routes: Routes = [
   },
   {
     path: 'lobby',
-    component: HomePageComponent
+    component: LobbyComponent
   },
   {
-    path: 'lobby/:lobbyId',
-    component: LobbyComponent
+    path: 'game/randomNumber',
+    component: RandomNumberComponent
   }
 ];
 

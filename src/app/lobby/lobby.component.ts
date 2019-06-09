@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { LobbyService } from './lobby.service';
 import { ClientService } from '../client.service';
-import { LobbyStatusResultsResult } from '../common/interfaces/results';
+import { StatusResultsResult } from '../common/interfaces/lobby/lobby-results';
 import { Subject, timer } from 'rxjs';
 import { debounce, distinctUntilChanged } from 'rxjs/operators';
 
@@ -23,7 +23,7 @@ export class LobbyComponent implements OnInit {
   validGameModes = this.lobbyService.getValidGameMode();
   lobbyClients: Array<string> = [''];
 
-  lobbyStatus: LobbyStatusResultsResult;
+  lobbyStatus: StatusResultsResult;
   lobbyGameMode: string = '';
   interval;
 
@@ -37,7 +37,9 @@ export class LobbyComponent implements OnInit {
     this.update();
     this.interval = setInterval(this.update.bind(this), 1000);
     this.clientGameModeSelect$
-      .pipe(debounce(() => timer(500))).pipe(distinctUntilChanged()).subscribe((gameMode) => this.setGameMode(gameMode));
+      .pipe(debounce(() => timer(500)))
+      .pipe(distinctUntilChanged())
+      .subscribe((gameMode) => this.setGameMode(gameMode));
   }
 
   ngOnDestroy() {
@@ -56,6 +58,11 @@ export class LobbyComponent implements OnInit {
         if (!data.error) {
           this.lobbyStatus = data.result;
           this.lobbyGameMode = this.lobbyStatus.gameMode;
+          // TODO: we should be using enums
+          // If the game has started
+          if (this.lobbyStatus.status === "STARTED") {
+          this.router.navigate(['game', this.lobbyGameMode]);
+          }
         }
         // if error with requesting the status
         else {
@@ -88,5 +95,20 @@ export class LobbyComponent implements OnInit {
   // this function is being called from the HTML. for Owners only
   private onGameModeClick(gameMode) {
     this.clientGameModeSelect$.next(gameMode);
+  }
+
+  // this function is being called from the HTML. for Owners only
+  private onStartClick() {
+    this.startLobbyGame();
+  }
+
+  private startLobbyGame() {
+    this.lobbyService.startLobbyGame(this.clientToken, this.lobbyId)
+      .subscribe( d => {
+        if (!d.error) {
+          // TOOD: display the game in UI (using the router)
+          this.router.navigate(['game', this.lobbyGameMode]);
+        }
+      });
   }
 }

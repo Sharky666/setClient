@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Results, LobbyCreationResults, LobbyStatusResults, LobbyJoinResults, LobbyValidGameModesResults, LobbyPutGameModeResults, LobbyClientsResults } from '../common/interfaces/results';
-import { Observable } from 'rxjs';
+import { Results, CreationResults, StatusResults, JoinResults, ValidGameModesResults, PutGameModeResults, ClientsResults } from '../common/interfaces/lobby/lobby-results';
 
 @Injectable({
   providedIn: 'root'
@@ -11,12 +10,14 @@ export class LobbyService {
   
   constructor(private http: HttpClient) {}
 
+  // setters
+
   public createLobby() {
-    return this.http.post<LobbyCreationResults>(`${this.address}/lobby/create`, {});
+    return this.http.post<CreationResults>(`${this.address}/lobby/create`, {});
   }
 
   public joinLobby(lobbyKey: string, name: string) {
-    return this.http.post<LobbyJoinResults>(`${this.address}/lobby/join`, '',
+    return this.http.post<JoinResults>(`${this.address}/lobby/join`, '',
     {
       headers: {
         'lobbykey': lobbyKey,
@@ -26,7 +27,7 @@ export class LobbyService {
   }
 
   public setLobbyGameMode(token: string, lobbyKey: string, gameMode: string) {
-    return this.http.put<LobbyPutGameModeResults>(`${this.address}/lobby/gameMode/${gameMode}`, '', {
+    return this.http.put<PutGameModeResults>(`${this.address}/lobby/gameMode/${gameMode}`, '', {
       headers: {
         lobbyKey,
         token
@@ -34,10 +35,19 @@ export class LobbyService {
     });
   }
 
-  // setters
+  public startLobbyGame(token: string, lobbyKey: string) {
+    return this.http.post<Results>(`${this.address}/lobby/start`, '', {
+      headers: {
+        'lobbykey': lobbyKey,
+        'token': token
+      }
+    });
+  }
+
+  // getters
 
   public getLobbyStatus(lobbyKey: string, token: string) {
-    return this.http.get<LobbyStatusResults>(`${this.address}/lobby/status`, {
+    return this.http.get<StatusResults>(`${this.address}/lobby/status`, {
       headers: {
         'lobbykey': lobbyKey,
         'token': token
@@ -46,7 +56,7 @@ export class LobbyService {
   };
 
   public getLobbyClients(lobbyKey: string, token: string) {
-    return this.http.get<LobbyClientsResults>(`${this.address}/lobby/clients`, {
+    return this.http.get<ClientsResults>(`${this.address}/lobby/clients`, {
       headers: {
         'lobbykey': lobbyKey,
         'token': token
@@ -55,6 +65,6 @@ export class LobbyService {
   };
 
   public getValidGameMode() {
-    return this.http.get<LobbyValidGameModesResults>(`${this.address}/lobby/allowedGames`);
+    return this.http.get<ValidGameModesResults>(`${this.address}/lobby/allowedGames`);
   }
 }

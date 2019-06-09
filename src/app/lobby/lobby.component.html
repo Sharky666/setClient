@@ -6,6 +6,7 @@
     <div *ngFor = "let gameMode of (validGameModes | async)?.result">
         <h3 (click) = "onGameModeClick(gameMode)">{{gameMode}}</h3>
     </div>
+    <button (click) = "onStartClick()" [disabled] = "!lobbyGameMode">start</button>
 </ng-container>
 <!-- display the clients in the lobby -->
 <div *ngFor = "let client of lobbyClients">

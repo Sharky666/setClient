@@ -33,7 +33,7 @@ export class HomePageComponent implements OnInit {
             .subscribe(joinData => {
               if (!joinData.error) {
                 // navigate to the lobby path
-                this.router.navigate(['lobby', lobbyKey]);
+                this.router.navigate(['lobby']);
                 // setting the client data to the clientService
                 this.clientService.setLobbyId(lobbyKey);
                 this.clientService.setToken(joinData.result.clientToken);
@@ -57,7 +57,7 @@ export class HomePageComponent implements OnInit {
         this.clientService.setLobbyId(this.lobbyId.toUpperCase());
         this.clientService.setName(this.clientName);
         this.clientService.setOwner(results.isOwner);
-        this.router.navigate(['lobby', this.clientService.getLobbyId()]);
+        this.router.navigate(['lobby']);
       }
       // error with joining
       else {

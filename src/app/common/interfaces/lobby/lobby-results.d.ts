@@ -1,14 +1,14 @@
 export interface Results {
-    result: any,
-    error: string
-}
-
-export interface LobbyCreationResults {
     result: string,
     error: string
 }
 
-export interface LobbyJoinResults {
+export interface CreationResults {
+    result: string,
+    error: string
+}
+
+export interface JoinResults {
     result: {
         clientToken:  string,
         isOwner: boolean
@@ -16,7 +16,7 @@ export interface LobbyJoinResults {
     error: string
 }
 
-export interface LobbyStatusResults {
+export interface StatusResults {
      result: {
         status: string,
         gameMode: string
@@ -24,22 +24,22 @@ export interface LobbyStatusResults {
     error: string
 }
 
-export interface LobbyClientsResults {
+export interface ClientsResults {
     result: Array<string>
     error: string
 }
 
-export interface LobbyValidGameModesResults {
+export interface ValidGameModesResults {
     result: Array<string>,
     error: string
 }
 
-export interface LobbyPutGameModeResults {
+export interface PutGameModeResults {
     result: string
     error: string
 }
 
-export interface LobbyStatusResultsResult {
+export interface StatusResultsResult {
     status: string,
     gameMode: string
 }
