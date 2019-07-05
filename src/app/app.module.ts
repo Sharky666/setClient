@@ -9,6 +9,7 @@ import { LobbyComponent } from './lobby/lobby.component';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { RandomNumberComponent } from './games/random-number/random-number.component';
+import { PopupComponent } from './popup/popup.component';
 
 @NgModule({
   declarations: [
@@ -17,6 +18,7 @@ import { RandomNumberComponent } from './games/random-number/random-number.compo
     JoinLobbyComponent,
     LobbyComponent,
     RandomNumberComponent,
+    PopupComponent,
   ],
   imports: [
     FormsModule,

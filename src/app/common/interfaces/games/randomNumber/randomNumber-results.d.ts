@@ -1,4 +1,9 @@
 export interface numberGuess {
-    results: string,
+    result: string,
     error: string
+}
+
+export interface RandomNumberGameStatus {
+    isInGame: boolean,
+    isGuessed: boolean
 }

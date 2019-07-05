@@ -2,4 +2,6 @@
   Random Number
 </h2>
 
+<app-popup *ngIf="!gameStatus?.isInGame && isOwner" [msg]="'play again?'" (onConfirm)="onPlayAgainConfirm()" (onCancel)="onPlayAgainCancel()"></app-popup>
 <input type="number" [(ngModel)]="guessNumber">
+<button (click)="onSubmitClick()" [disabled]="hasGuessed">send my guess please</button>
