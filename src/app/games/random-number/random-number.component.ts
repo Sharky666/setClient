@@ -14,6 +14,7 @@ import { StatusResultsResult } from '../../common/interfaces/lobby/lobby-results
 })
 export class RandomNumberComponent implements OnInit {
   interval;
+  result: string;
   guessNumber: number;
   hasGuessed = false;
   clientToken = this.clientService.getToken();
@@ -42,7 +43,7 @@ export class RandomNumberComponent implements OnInit {
     this.hasGuessed = true;
     this.randomNumberService.setNumber(this.clientToken, this.clientLobby, this.guessNumber)
       .subscribe(d => {
-        console.log(d.result);
+        this.result = d.result;
       });
   }
 
@@ -52,7 +53,6 @@ export class RandomNumberComponent implements OnInit {
   }
 
   updateGameStatus() {
-    if (this.gameStatus && this.gameStatus.isInGame === false) return;
     this.randomNumberService.getStatus(this.clientToken, this.clientLobby)
     .subscribe(d => {
       this.gameStatus = d.result;
@@ -88,7 +88,6 @@ export class RandomNumberComponent implements OnInit {
   }
 
   onPlayAgainConfirm() {
-    this.gameStatus.isInGame = true;
     this.randomNumberService.playAgain(this.clientToken, this.clientLobby)
       .subscribe(d => {
         this.updateGameStatus();
@@ -98,7 +97,7 @@ export class RandomNumberComponent implements OnInit {
   onPlayAgainCancel() {
     this.randomNumberService.endGame(this.clientToken, this.clientLobby)
       .subscribe(d => {
-        this.updateGameStatus();
+        this.updateLobbyStatus();
       });
   }
 }

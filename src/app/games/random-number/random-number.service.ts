@@ -1,14 +1,14 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http'
-import { Observable } from 'rxjs'
-import { numberGuess, RandomNumberGameStatus } from '../../common/interfaces/games/randomNumber/randomNumber-results'
+import { HttpClient } from '@angular/common/http';
+import { ip, port } from "../../common/config";
+import { numberGuess, RandomNumberGameStatus } from '../../common/interfaces/games/randomNumber/randomNumber-results';
 import { ApiResponse } from '../../common/interfaces/common';
 
 @Injectable({
   providedIn: 'root'
 })
 export class RandomNumberService {
-  private address:string = 'http://localhost:2000';
+  private address:string = `http://${ip}:${port}`;
   private game:string = 'randomNumber';
 
   constructor(private http: HttpClient) { }

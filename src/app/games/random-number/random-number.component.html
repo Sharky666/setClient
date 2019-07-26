@@ -4,4 +4,12 @@
 
 <app-popup *ngIf="!gameStatus?.isInGame && isOwner" [msg]="'play again?'" (onConfirm)="onPlayAgainConfirm()" (onCancel)="onPlayAgainCancel()"></app-popup>
 <input type="number" [(ngModel)]="guessNumber">
+<p *ngIf="!hasGuessed else waiting">
+  have a guess
+</p>
+<p>{{result}}</p>
 <button (click)="onSubmitClick()" [disabled]="hasGuessed">send my guess please</button>
+
+<ng-template #waiting>
+  <p>Waiting for the other players...</p>
+</ng-template>

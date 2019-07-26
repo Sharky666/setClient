@@ -1,12 +1,13 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { ip, port } from "../common/config";
 import { Results, CreationResults, StatusResults, JoinResults, ValidGameModesResults, PutGameModeResults, ClientsResults } from '../common/interfaces/lobby/lobby-results';
 
 @Injectable({
   providedIn: 'root'
 })
 export class LobbyService {
-  private address:string = 'http://localhost:2000';
+  private address:string = `http://${ip}:${port}`;
   
   constructor(private http: HttpClient) {}
 
